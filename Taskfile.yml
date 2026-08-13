@@ -1,0 +1,33 @@
+version: "3"
+
+silent: true
+
+tasks:
+  ci:local:
+    desc: Execute the static-analysis standards workflow locally with act
+    cmds:
+      - task --dir .. ci:act:plugin
+  test:
+    desc: Run the plugin unit tests
+    cmds:
+      - pnpm run test
+  test:coverage:
+    desc: Run the plugin coverage gate
+    cmds:
+      - pnpm run test:coverage
+  test:mutation:
+    desc: Run the plugin mutation gate
+    cmds:
+      - pnpm run test:mutation
+  test:mutation:reporting:
+    desc: Run the reporting plugin mutation slice
+    cmds:
+      - pnpm run test:mutation:reporting
+  publish:check:
+    desc: Validate the npm package before publishing
+    cmds:
+      - pnpm run publish:check
+  publish:smoke:
+    desc: Pack and consume the npm package in a temporary project
+    cmds:
+      - pnpm run publish:smoke

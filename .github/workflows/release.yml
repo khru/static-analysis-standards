@@ -1,0 +1,92 @@
+name: Release package
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to publish
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+  attestations: write
+
+env:
+  PACKAGE_NAME: "@khru/static-analysis-standards"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: package-release
+    steps:
+      - name: Resolve release tag
+        id: release
+        env:
+          PUSH_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+          DISPATCH_TAG: ${{ inputs.tag || '' }}
+        run: |
+          set -euo pipefail
+          tag="${PUSH_TAG:-$DISPATCH_TAG}"
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          printf 'tag=%s\n' "$tag" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ steps.release.outputs.tag }}
+          fetch-depth: 0
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: 11.15.1
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: 26.5.0
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - name: Verify package identity and tag
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          test "$(node -p "require('./package.json').version")" = "${RELEASE_TAG#v}"
+          test "$(node -p "require('./package.json').private === true")" != "true"
+          test "$(node -p "require('./package.json').name")" = "$PACKAGE_NAME"
+      - run: pnpm run editorconfig
+      - run: pnpm run typecheck
+      - run: pnpm run format:check
+      - run: pnpm run lint
+      - run: pnpm run sa:report plugin
+      - run: pnpm run test:coverage
+      - run: pnpm run test:mutation
+      - run: pnpm run publish:check
+      - run: pnpm run publish:smoke
+      - name: Create release archive
+        run: pnpm pack --pack-destination release-assets
+      - name: Publish to npm with provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm publish release-assets/*.tgz --provenance --access public --no-git-checks
+      - name: Publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+        run: pnpm publish release-assets/*.tgz --registry=https://npm.pkg.github.com --no-git-checks
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0.20.5
+        with:
+          path: release-assets
+          format: spdx-json
+          output-file: release-assets/sbom.spdx.json
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-path: release-assets/*.tgz
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-path: release-assets/sbom.spdx.json
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ steps.release.outputs.tag }}" --verify-tag --generate-notes release-assets/*.tgz release-assets/sbom.spdx.json

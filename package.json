@@ -1,0 +1,84 @@
+{
+  "name": "@khru/static-analysis-standards",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Community Ops static analysis standards: deterministic quality, domain, architecture and test-smell rules with a non-blocking strict heuristics preset and a data-driven registry.",
+  "author": "Community Ops contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khru/static-analysis-standards.git"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "static-analysis",
+    "typescript",
+    "architecture",
+    "testing"
+  ],
+  "engines": {
+    "node": "26.5.0"
+  },
+  "packageManager": "pnpm@11.15.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint --max-warnings 0 .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "report:strict": "eslint --format json --output-file reports/strict-heuristics.json --config eslint.strict.config.ts .",
+    "sa:report": "jiti src/reporting/cli.ts",
+    "editorconfig": "editorconfig-checker",
+    "test:mutation:reporting": "stryker run stryker.reporting.config.json --reporters clear-text,progress",
+    "test:mutation": "stryker run --reporters clear-text,progress",
+    "publish:check": "pnpm run build && pnpm exec publint && pnpm exec attw --pack . --ignore-rules cjs-resolves-to-esm",
+    "publish:smoke": "pnpm run build && node scripts/publish-smoke.mjs",
+    "check": "pnpm run editorconfig && pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run sa:report plugin"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0",
+    "typescript": "^6.0.0",
+    "typescript-eslint": "^8.65.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.1.2",
+    "@typescript-eslint/rule-tester": "8.66.0",
+    "@typescript-eslint/utils": "^8.65.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "@stryker-mutator/core": "9.6.1",
+    "@stryker-mutator/typescript-checker": "9.6.1",
+    "@stryker-mutator/vitest-runner": "9.6.1",
+    "dependency-cruiser": "18.1.1",
+    "editorconfig-checker": "^6.1.1",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
+    "jiti": "2.7.0",
+    "@arethetypeswrong/cli": "0.18.5",
+    "publint": "0.3.23",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
+  }
+}

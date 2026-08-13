@@ -1,0 +1,16 @@
+export const CONCRETE_LOW_LEVEL_SEGMENTS: readonly string[] = [
+  "infrastructure",
+  "persistence",
+  "repository",
+  "repositories",
+  "adapter",
+  "adapters",
+  "gateway",
+  "gateways",
+  "client",
+  "clients",
+  "mapper",
+  "mappers",
+  "datasource",
+  "data-sources",
+];

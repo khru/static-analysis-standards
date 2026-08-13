@@ -1,0 +1,32 @@
+name: Package quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: 11.15.1
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: 26.5.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run editorconfig
+      - run: pnpm run typecheck
+      - run: pnpm run format:check
+      - run: pnpm run lint
+      - run: pnpm run sa:report plugin
+      - run: pnpm run test:coverage
+      - run: pnpm run test:mutation
+      - run: pnpm run publish:check
+      - run: pnpm run publish:smoke
