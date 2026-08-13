@@ -46,7 +46,8 @@ jobs:
           node-version: 26.5.0
           cache: pnpm
           registry-url: https://registry.npmjs.org
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm rebuild esbuild
       - name: Verify package identity and tag
         env:
           RELEASE_TAG: ${{ steps.release.outputs.tag }}

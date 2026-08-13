@@ -20,7 +20,8 @@ jobs:
         with:
           node-version: 26.5.0
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm rebuild esbuild
       - run: pnpm run editorconfig
       - run: pnpm run typecheck
       - run: pnpm run format:check
