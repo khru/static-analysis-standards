@@ -16,8 +16,11 @@ This package is released from a Git tag. The hosted workflow does not run
   contains the matching version.
 - The package must not be private when the workflow runs. This is intentionally
   checked by the workflow rather than changed during release automation.
-- The `npm-release` GitHub environment must contain the `NPM_TOKEN` secret.
-  The token needs publish access to `@evalverde/static-analysis-standards`.
+- npm publication uses npm Trusted Publishing with GitHub Actions OIDC; no
+  long-lived `NPM_TOKEN` is stored in the repository.
+- Configure the npm package trusted publisher for owner `khru`, repository
+  `static-analysis-standards`, workflow `.github/workflows/release.yml` and
+  the `main` branch or release environment selected for publishing.
 - GitHub Packages publication uses the repository `GITHUB_TOKEN` and requires
   package write permission for the `khru` owner.
 - The repository must allow GitHub Actions to write contents and attestations,

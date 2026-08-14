@@ -20,7 +20,37 @@ env:
   PACKAGE_NAME: "@evalverde/static-analysis-standards"
 
 jobs:
+  mutation:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: code
+            pattern: "src/rules/code/**/*.ts"
+          - name: domain
+            pattern: "src/rules/domain/**/*.ts"
+          - name: boundaries
+            pattern: "src/rules/architecture/**/*.ts,src/rules/testing/**/*.ts"
+          - name: quality
+            pattern: "src/rules/quality/**/*.ts"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: 11.15.1
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: 26.5.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm rebuild esbuild
+      - run: pnpm run test:mutation:shard -- ${{ matrix.name }} '${{ matrix.pattern }}'
+
   release:
+    needs: mutation
     runs-on: ubuntu-latest
     environment: package-release
     steps:
@@ -62,19 +92,11 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run sa:report plugin
       - run: pnpm run test:coverage
-      - name: Run mutation shards
-        run: |
-          pnpm run test:mutation:shard -- code 'src/rules/code/**/*.ts'
-          pnpm run test:mutation:shard -- domain 'src/rules/domain/**/*.ts'
-          pnpm run test:mutation:shard -- boundaries 'src/rules/architecture/**/*.ts,src/rules/testing/**/*.ts'
-          pnpm run test:mutation:shard -- quality 'src/rules/quality/**/*.ts'
       - run: pnpm run publish:check
       - run: pnpm run publish:smoke
       - name: Create release archive
         run: pnpm pack --pack-destination release-assets
-      - name: Publish to npm with provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm with trusted publishing and provenance
         run: pnpm publish release-assets/*.tgz --provenance --access public --no-git-checks
       - name: Publish to GitHub Packages
         env:
