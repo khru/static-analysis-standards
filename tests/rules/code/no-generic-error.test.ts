@@ -46,3 +46,9 @@ ruleTester.run("no-generic-error", noGenericError, {
     },
   ],
 });
+
+describe("no-generic-error metadata", () => {
+  it("should expose its public diagnostic description", () => {
+    expect(noGenericError.meta.docs?.description).toContain("generic");
+  });
+});

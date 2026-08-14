@@ -55,3 +55,9 @@ ruleTester.run("no-date-construction-outside-clock", noDateConstructionOutsideCl
     },
   ],
 });
+
+describe("no-date-construction-outside-clock metadata", () => {
+  it("should expose its public diagnostic description", () => {
+    expect(noDateConstructionOutsideClock.meta.docs?.description).toContain("date");
+  });
+});

@@ -16,7 +16,7 @@ describe("SARIF reporting", () => {
       $schema: "https://json.schemastore.org/sarif-2.1.0.json",
       runs: [
         {
-          tool: { driver: { name: "@khru/static-analysis-standards", rules: [] } },
+          tool: { driver: { name: "@evalverde/static-analysis-standards", rules: [] } },
           results: [],
         },
       ],

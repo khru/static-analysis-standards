@@ -1,9 +1,10 @@
 # Publishing
 
 The package repository is `https://github.com/khru/static-analysis-standards`.
-The package name is `@khru/static-analysis-standards` in both npm and GitHub
-Packages. The same versioned tarball is validated before either registry is
-published.
+The package name is `@evalverde/static-analysis-standards` in both npm and GitHub
+Packages. npm publication is public and does not require a paid private
+registry subscription. The same versioned tarball is validated before either
+registry is published.
 
 This package is released from a Git tag. The hosted workflow does not run
 `act`; `act` is a local verification tool only.
@@ -16,7 +17,7 @@ This package is released from a Git tag. The hosted workflow does not run
 - The package must not be private when the workflow runs. This is intentionally
   checked by the workflow rather than changed during release automation.
 - The `npm-release` GitHub environment must contain the `NPM_TOKEN` secret.
-  The token needs publish access to `@khru/static-analysis-standards`.
+  The token needs publish access to `@evalverde/static-analysis-standards`.
 - GitHub Packages publication uses the repository `GITHUB_TOKEN` and requires
   package write permission for the `khru` owner.
 - The repository must allow GitHub Actions to write contents and attestations,

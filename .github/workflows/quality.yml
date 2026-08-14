@@ -9,6 +9,33 @@ permissions:
   contents: read
 
 jobs:
+  mutation:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: code
+            pattern: "src/rules/code/**/*.ts"
+          - name: domain
+            pattern: "src/rules/domain/**/*.ts"
+          - name: boundaries
+            pattern: "src/rules/architecture/**/*.ts,src/rules/testing/**/*.ts"
+          - name: quality
+            pattern: "src/rules/quality/**/*.ts"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: 11.15.1
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: 26.5.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm rebuild esbuild
+      - run: pnpm run test:mutation:shard -- ${{ matrix.name }} '${{ matrix.pattern }}'
+
   quality:
     runs-on: ubuntu-latest
     steps:
@@ -28,6 +55,5 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run sa:report plugin
       - run: pnpm run test:coverage
-      - run: pnpm run test:mutation
       - run: pnpm run publish:check
       - run: pnpm run publish:smoke

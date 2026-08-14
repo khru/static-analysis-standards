@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@khru/static-analysis-standards` are recorded
+All notable changes to `@evalverde/static-analysis-standards` are recorded
 in this file.
 
 ## [0.1.0] - Unreleased

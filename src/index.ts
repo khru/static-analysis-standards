@@ -12,7 +12,7 @@ export interface EngineeringPlugin extends ESLint.Plugin {
 
 const plugin: EngineeringPlugin = {
   meta: {
-    name: "@khru/static-analysis-standards",
+    name: "@evalverde/static-analysis-standards",
     version: "0.1.0",
   },
   rules: rules as unknown as ESLint.Plugin["rules"],

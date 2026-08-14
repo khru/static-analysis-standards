@@ -32,3 +32,9 @@ ruleTester.run("no-empty-catch", noEmptyCatch, {
     },
   ],
 });
+
+describe("no-empty-catch metadata", () => {
+  it("should expose its public diagnostic description", () => {
+    expect(noEmptyCatch.meta.docs?.description).toContain("catch");
+  });
+});

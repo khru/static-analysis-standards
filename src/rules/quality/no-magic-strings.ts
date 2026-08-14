@@ -42,9 +42,8 @@ function isTypeOrDefinitionPosition(node: TSESTree.Literal): boolean {
 
 function isInsideClassField(node: TSESTree.Literal): boolean {
   let current: TSESTree.Node | undefined = node.parent;
-  while (current !== undefined && current.type !== "PropertyDefinition") {
+  while (current !== undefined && current.type !== "PropertyDefinition")
     current = current.parent ?? undefined;
-  }
   return current !== undefined;
 }
 
@@ -68,9 +67,7 @@ function isErrorNameAssignment(node: TSESTree.Literal): boolean {
     return false;
   }
   let current: TSESTree.Node | undefined = parent.parent;
-  while (current !== undefined && !isErrorSubclass(current)) {
-    current = current.parent ?? undefined;
-  }
+  while (current !== undefined && !isErrorSubclass(current)) current = current.parent ?? undefined;
   return current !== undefined;
 }
 

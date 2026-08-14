@@ -1,5 +1,5 @@
 {
-  "name": "@khru/static-analysis-standards",
+  "name": "@evalverde/static-analysis-standards",
   "version": "0.1.0",
   "type": "module",
   "description": "Community Ops static analysis standards: deterministic quality, domain, architecture and test-smell rules with a non-blocking strict heuristics preset and a data-driven registry.",
@@ -51,6 +51,7 @@
     "editorconfig": "editorconfig-checker",
     "test:mutation:reporting": "stryker run stryker.reporting.config.json --reporters clear-text,progress",
     "test:mutation": "stryker run --reporters clear-text,progress",
+    "test:mutation:shard": "node scripts/run-mutation-shard.mjs",
     "publish:check": "pnpm run build && pnpm exec publint && pnpm exec attw --pack . --ignore-rules cjs-resolves-to-esm",
     "publish:smoke": "pnpm run build && node scripts/publish-smoke.mjs",
     "check": "pnpm run editorconfig && pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run sa:report plugin"

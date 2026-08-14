@@ -33,3 +33,9 @@ ruleTester.run("no-nested-ternary", noNestedTernary, {
     },
   ],
 });
+
+describe("no-nested-ternary metadata", () => {
+  it("should expose its public diagnostic description", () => {
+    expect(noNestedTernary.meta.docs?.description).toContain("nested");
+  });
+});

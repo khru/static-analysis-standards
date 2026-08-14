@@ -48,6 +48,7 @@ pnpm run format:check
 pnpm run test
 pnpm run test:coverage
 pnpm run test:mutation
+pnpm run test:mutation:shard -- <name> <mutate-pattern>
 pnpm run sa:report
 pnpm run check
 ```

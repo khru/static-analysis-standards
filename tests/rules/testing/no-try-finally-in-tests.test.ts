@@ -40,6 +40,11 @@ ruleTester.run("no-try-finally-in-tests", noTryFinallyInTests, {
       filename: "src/modules/incidents/application/report-incident.ts",
     },
     {
+      name: "does not inspect a test-like call in production code",
+      code: 'it("runs", () => { try { run(); } finally { reset(); } });',
+      filename: "src/modules/incidents/application/report-incident.ts",
+    },
+    {
       name: "ignores control flow in non-test function calls",
       code: "someFunction(() => { try { run(); } finally { reset(); } });",
       filename: "test/unit/incidents/report-incident.test.ts",
@@ -75,5 +80,17 @@ ruleTester.run("no-try-finally-in-tests", noTryFinallyInTests, {
       filename: "test/unit/incidents/report-incident.test.ts",
       errors: [{ messageId: "testTryFinally" }],
     },
+    {
+      name: "reports finally when the try also has a catch and a return",
+      code: 'it("cleans up", () => { try { return run(); } catch (error) { handle(error); } finally { reset(); } });',
+      filename: "test/unit/incidents/report-incident.test.ts",
+      errors: [{ messageId: "testTryFinally" }],
+    },
   ],
+});
+
+describe("no-try-finally-in-tests metadata", () => {
+  it("should expose its isolated cleanup contract", () => {
+    expect(noTryFinallyInTests.meta.docs?.description).toContain("lifecycle hook");
+  });
 });

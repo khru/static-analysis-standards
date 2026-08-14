@@ -15,10 +15,9 @@ const contextualExceptions = new Set(CONTEXTUAL_EXCEPTIONS);
 
 function nearestVariableDeclarator(node: TSESTree.Node): TSESTree.VariableDeclarator | undefined {
   let current: TSESTree.Node | undefined = node.parent;
-  while (current !== undefined && current.type !== "VariableDeclarator") {
+  while (current !== undefined && current.type !== "VariableDeclarator")
     current = current.parent ?? undefined;
-  }
-  return current;
+  return current?.type === "VariableDeclarator" ? current : undefined;
 }
 
 function isNamedConstantExtraction(node: TSESTree.Literal): boolean {
@@ -34,9 +33,8 @@ function isNamedConstantExtraction(node: TSESTree.Literal): boolean {
 
 function isInsideClassField(node: TSESTree.Literal): boolean {
   let current: TSESTree.Node | undefined = node.parent;
-  while (current !== undefined && current.type !== "PropertyDefinition") {
+  while (current !== undefined && current.type !== "PropertyDefinition")
     current = current.parent ?? undefined;
-  }
   return current !== undefined;
 }
 

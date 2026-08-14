@@ -33,11 +33,11 @@ try {
   await exec("pnpm", ["add", "--ignore-scripts", packagePath], { cwd: consumerDirectory });
 
   const consumerCheck = [
-    "const plugin = await import('@khru/static-analysis-standards');",
+    "const plugin = await import('@evalverde/static-analysis-standards');",
     "if (!plugin.default || !plugin.default.rules || !plugin.default.configs) process.exit(1);",
-    "const metadata = await import('@khru/static-analysis-standards/package.json', { with: { type: 'json' } });",
+    "const metadata = await import('@evalverde/static-analysis-standards/package.json', { with: { type: 'json' } });",
     `if (metadata.default.name !== ${JSON.stringify(packageManifest.name)}) process.exit(1);`,
-    "try { await import('@khru/static-analysis-standards/dist/index.js'); process.exit(1); } catch {}",
+    "try { await import('@evalverde/static-analysis-standards/dist/index.js'); process.exit(1); } catch {}",
   ].join("\n");
   await exec("node", ["--input-type=module", "-e", consumerCheck], { cwd: consumerDirectory });
 } finally {

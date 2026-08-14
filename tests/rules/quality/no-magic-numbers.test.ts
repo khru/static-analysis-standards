@@ -65,6 +65,16 @@ ruleTester.run("no-magic-numbers", noMagicNumbers, {
       code: "const untouched = state !== null;",
       filename: "src/modules/incidents/domain/incident.ts",
     },
+    {
+      name: "accepts a literal in a readonly class field",
+      code: "class RetryPolicy { readonly retries = 3; }",
+      filename: "src/modules/incidents/application/report-incident.ts",
+    },
+    {
+      name: "accepts numbers in a domain test file",
+      code: "const retries = 5;",
+      filename: "src/modules/incidents/domain/incident.test.ts",
+    },
   ],
   invalid: [
     {
@@ -121,5 +131,36 @@ ruleTester.run("no-magic-numbers", noMagicNumbers, {
       filename: "src/modules/incidents/domain/incident.ts",
       errors: [{ messageId: "magicNumber" }],
     },
+    {
+      name: "reports a number in a mutable named declaration",
+      code: "let RETRY_LIMIT = 5;",
+      filename: "src/modules/incidents/domain/incident.ts",
+      errors: [{ messageId: "magicNumber" }],
+    },
+    {
+      name: "reports a number in a destructured declaration",
+      code: "const [retryLimit] = [5];",
+      filename: "src/modules/incidents/domain/incident.ts",
+      errors: [{ messageId: "magicNumber" }],
+    },
+    {
+      name: "reports an uninitialized mutable number declaration",
+      code: "let retries; retries = 5;",
+      filename: "src/modules/incidents/domain/incident.ts",
+      errors: [{ messageId: "magicNumber" }],
+    },
+    {
+      name: "reports a number in a non-pure constant expression",
+      code: "const RETRY_LIMIT = retries + 5;",
+      filename: "src/modules/incidents/domain/incident.ts",
+      errors: [{ messageId: "magicNumber" }],
+    },
   ],
+});
+
+describe("no-magic-numbers metadata", () => {
+  it("should expose its allowlist schema", () => {
+    expect(noMagicNumbers.meta.docs?.description).toContain("numeric literals");
+    expect(noMagicNumbers.defaultOptions).toEqual([{ allowlist: [] }]);
+  });
 });

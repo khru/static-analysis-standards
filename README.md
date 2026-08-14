@@ -1,6 +1,6 @@
 # Community Ops static analysis standards
 
-`@khru/static-analysis-standards` is the pinned ESLint plugin that encodes the Community Ops engineering discipline as deterministic lint rules and non-blocking review heuristics. Each rule flags a concrete code or test smell and reports a suggested refactor in its message, so the discipline is enforced by the linter instead of by reviewer taste.
+`@evalverde/static-analysis-standards` is the pinned ESLint plugin that encodes the Community Ops engineering discipline as deterministic lint rules and non-blocking review heuristics. Each rule flags a concrete code or test smell and reports a suggested refactor in its message, so the discipline is enforced by the linter instead of by reviewer taste.
 
 The plugin is developed with strict TypeScript, Vitest and the `@typescript-eslint/rule-tester`, and is published to npm and GitHub Packages for application repositories.
 
@@ -163,7 +163,7 @@ running as an ESLint side effect.
 For a published release, install the decoupled package from npm with pnpm:
 
 ```text
-pnpm add --save-dev @khru/static-analysis-standards
+pnpm add --save-dev @evalverde/static-analysis-standards
 ```
 
 The package declares ESLint, TypeScript and `typescript-eslint` as peer dependencies;
@@ -178,7 +178,7 @@ materialized local dependency:
 ```json
 {
   "devDependencies": {
-    "@khru/static-analysis-standards": "^0.1.0"
+    "@evalverde/static-analysis-standards": "^0.1.0"
   }
 }
 ```
@@ -186,7 +186,7 @@ materialized local dependency:
 and spread the presets into their flat ESLint config, registering the `standards` plugin object once:
 
 ```ts
-import standards from "@khru/static-analysis-standards";
+import standards from "@evalverde/static-analysis-standards";
 
 export default tseslint.config(
   js.configs.recommended,

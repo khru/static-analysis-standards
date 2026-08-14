@@ -43,7 +43,7 @@ export function toSarif(report: ArchitectureReport): SarifReport {
       {
         tool: {
           driver: {
-            name: "@khru/static-analysis-standards",
+            name: "@evalverde/static-analysis-standards",
             rules: ruleIds.map((id) => ({ id })),
           },
         },

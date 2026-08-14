@@ -65,6 +65,11 @@ ruleTester.run("no-test-control-flow", noTestControlFlow, {
       filename: "src/modules/incidents/application/report-incident.ts",
     },
     {
+      name: "does not inspect a test-like call in production code",
+      code: 'it("runs", () => { if (ready) { run(); } });',
+      filename: "src/modules/incidents/application/report-incident.ts",
+    },
+    {
       name: "ignores nested test generation",
       code: 'describe.each([1, 2])("number %s", (number) => { it("works", () => { expect(number).toBe(number); }); });',
       filename: "test/unit/incidents/report-incident.test.ts",
@@ -135,5 +140,17 @@ ruleTester.run("no-test-control-flow", noTestControlFlow, {
       filename: "test/unit/incidents/report-incident.test.ts",
       errors: [{ messageId: "testControlFlow" }],
     },
+    {
+      name: "reports an if and loop in the same test callback",
+      code: 'it("runs", () => { if (ready) { for (const item of items) { run(item); } } });',
+      filename: "test/unit/incidents/report-incident.test.ts",
+      errors: [{ messageId: "testControlFlow" }, { messageId: "testControlFlow" }],
+    },
   ],
+});
+
+describe("no-test-control-flow metadata", () => {
+  it("should expose its linear test contract", () => {
+    expect(noTestControlFlow.meta.docs?.description).toContain("linear");
+  });
 });

@@ -4,6 +4,7 @@ coverage/
 reports/
 .stryker-tmp/
 release-assets/
+.stryker-shards/
 *.tsbuildinfo
 .env
 .env.*

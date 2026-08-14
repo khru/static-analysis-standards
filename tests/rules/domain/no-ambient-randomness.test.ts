@@ -34,6 +34,16 @@ ruleTester.run("no-ambient-randomness", noAmbientRandomness, {
       code: "const id = identifiers.next();",
       filename: "src/modules/incidents/application/report-incident.ts",
     },
+    {
+      name: "does not report a different crypto method",
+      code: "const id = crypto.randomFillSync(buffer);",
+      filename: "src/modules/incidents/application/report-incident.ts",
+    },
+    {
+      name: "does not report a random method on another object",
+      code: "const id = generator.randomUUID();",
+      filename: "src/modules/incidents/application/report-incident.ts",
+    },
   ],
   invalid: [
     {
@@ -61,4 +71,10 @@ ruleTester.run("no-ambient-randomness", noAmbientRandomness, {
       errors: [{ messageId: "ambientRandomness" }],
     },
   ],
+});
+
+describe("no-ambient-randomness metadata", () => {
+  it("should expose its diagnostic description", () => {
+    expect(noAmbientRandomness.meta.docs?.description).toContain("randomness");
+  });
 });

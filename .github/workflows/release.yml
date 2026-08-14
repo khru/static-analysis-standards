@@ -17,7 +17,7 @@ permissions:
   attestations: write
 
 env:
-  PACKAGE_NAME: "@khru/static-analysis-standards"
+  PACKAGE_NAME: "@evalverde/static-analysis-standards"
 
 jobs:
   release:
@@ -62,7 +62,12 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run sa:report plugin
       - run: pnpm run test:coverage
-      - run: pnpm run test:mutation
+      - name: Run mutation shards
+        run: |
+          pnpm run test:mutation:shard -- code 'src/rules/code/**/*.ts'
+          pnpm run test:mutation:shard -- domain 'src/rules/domain/**/*.ts'
+          pnpm run test:mutation:shard -- boundaries 'src/rules/architecture/**/*.ts,src/rules/testing/**/*.ts'
+          pnpm run test:mutation:shard -- quality 'src/rules/quality/**/*.ts'
       - run: pnpm run publish:check
       - run: pnpm run publish:smoke
       - name: Create release archive

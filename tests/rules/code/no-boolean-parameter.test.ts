@@ -50,3 +50,9 @@ ruleTester.run("no-boolean-parameter", noBooleanParameter, {
     },
   ],
 });
+
+describe("no-boolean-parameter metadata", () => {
+  it("should expose its public diagnostic description", () => {
+    expect(noBooleanParameter.meta.docs?.description).toContain("boolean");
+  });
+});

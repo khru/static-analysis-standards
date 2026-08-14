@@ -9,7 +9,7 @@ describe("plugin surface", () => {
   });
   it("exposes the plugin metadata", () => {
     expect(plugin.meta).toEqual({
-      name: "@khru/static-analysis-standards",
+      name: "@evalverde/static-analysis-standards",
       version: "0.1.0",
     });
   });

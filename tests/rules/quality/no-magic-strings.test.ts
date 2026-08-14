@@ -100,6 +100,16 @@ ruleTester.run("no-magic-strings", noMagicStrings, {
       code: 'export const InvalidIncidentIdCode: unique symbol = Symbol("InvalidIncidentId");',
       filename: "src/modules/incidents/domain/invalid-incident-id.ts",
     },
+    {
+      name: "accepts a string in a dynamic import",
+      code: 'const module = import("./incident.js");',
+      filename: "src/modules/incidents/application/report-incident.ts",
+    },
+    {
+      name: "accepts a string in a domain test file",
+      code: 'const state = "active";',
+      filename: "src/modules/incidents/domain/incident.test.ts",
+    },
   ],
   invalid: [
     {
@@ -174,5 +184,18 @@ ruleTester.run("no-magic-strings", noMagicStrings, {
       filename: "src/incidents/domain/community.ts",
       errors: [{ messageId: "magicString" }],
     },
+    {
+      name: "reports a string in a class field method body",
+      code: 'class Community { public getName() { return "Community"; } }',
+      filename: "src/modules/incidents/domain/community.ts",
+      errors: [{ messageId: "magicString" }],
+    },
   ],
+});
+
+describe("no-magic-strings metadata", () => {
+  it("should expose its allowlist schema", () => {
+    expect(noMagicStrings.meta.docs?.description).toContain("string literals");
+    expect(noMagicStrings.defaultOptions).toEqual([{ allowlist: [] }]);
+  });
 });

@@ -24,6 +24,16 @@ ruleTester.run("depend-on-port-not-adapter", dependOnPortNotAdapter, {
       code: "import { IncidentTable } from './incident-table.js';",
       filename: "src/modules/incidents/infrastructure/postgres-incident-repository.ts",
     },
+    {
+      name: "tests may import infrastructure adapters",
+      code: "import { PostgresIncidentRepository } from '../infrastructure/postgres-incident-repository.js';",
+      filename: "test/architecture/modular-monolith.test.ts",
+    },
+    {
+      name: "an application test file is excluded from adapter analysis",
+      code: "import { PostgresIncidentRepository } from '../infrastructure/postgres-incident-repository.js';",
+      filename: "src/modules/incidents/application/report-incident.test.ts",
+    },
   ],
   invalid: [
     {
@@ -49,4 +59,10 @@ ruleTester.run("depend-on-port-not-adapter", dependOnPortNotAdapter, {
       ],
     },
   ],
+});
+
+describe("depend-on-port-not-adapter metadata", () => {
+  it("should expose its port dependency contract", () => {
+    expect(dependOnPortNotAdapter.meta.docs?.description).toContain("owning port");
+  });
 });

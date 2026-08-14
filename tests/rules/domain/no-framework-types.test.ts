@@ -24,6 +24,21 @@ ruleTester.run("no-framework-types", noFrameworkTypes, {
       code: "import { readFile } from 'node:fs/promises';",
       filename: "src/modules/incidents/application/reader.ts",
     },
+    {
+      name: "tests may import a framework",
+      code: "import express from 'express';",
+      filename: "test/unit/incidents/report-incident.test.ts",
+    },
+    {
+      name: "a domain test file is excluded from framework analysis",
+      code: "import express from 'express';",
+      filename: "src/modules/incidents/domain/incident.test.ts",
+    },
+    {
+      name: "a domain test directory is excluded from framework analysis",
+      code: "import express from 'express';",
+      filename: "src/modules/incidents/domain/test/incident.ts",
+    },
   ],
   invalid: [
     {
@@ -51,5 +66,20 @@ ruleTester.run("no-framework-types", noFrameworkTypes, {
       options: [["my-http"]],
       errors: [{ messageId: "frameworkImport", data: { source: "my-http" } }],
     },
+    {
+      name: "reports a custom framework subpath",
+      code: "import { something } from 'my-http/client';",
+      filename: "src/modules/incidents/domain/incident.ts",
+      options: [["my-http"]],
+      errors: [{ messageId: "frameworkImport", data: { source: "my-http/client" } }],
+    },
   ],
+});
+
+describe("no-framework-types metadata", () => {
+  it("should expose its framework-independent contract", () => {
+    expect(noFrameworkTypes.meta.docs?.description).toContain("framework-independent");
+    expect(noFrameworkTypes.defaultOptions).toEqual([[]]);
+    expect(noFrameworkTypes.meta.schema).toEqual([expect.objectContaining({ uniqueItems: true })]);
+  });
 });

@@ -26,6 +26,21 @@ ruleTester.run("max-nesting-depth", maxNestingDepth, {
       code: "function f() { if (a) { if (b) { if (c) { run(); } } } }",
       options: [{}],
     },
+    {
+      name: "sibling controls do not inherit depth",
+      code: "function f() { if (a) { run(); } if (b) { run(); } }",
+      options: [{ max: 2 }],
+    },
+    {
+      name: "sibling controls preserve the frame depth after exit",
+      code: "function f() { if (a) { if (b) { run(); } } if (c) { run(); } }",
+      options: [{ max: 2 }],
+    },
+    {
+      name: "a flat function after a nested function starts at zero depth",
+      code: "function nested() { if (a) { if (b) { run(); } } } function flat() { if (c) { run(); } }",
+      options: [{ max: 2 }],
+    },
   ],
   invalid: [
     {
@@ -40,5 +55,30 @@ ruleTester.run("max-nesting-depth", maxNestingDepth, {
       options: [{ max: 1 }],
       errors: [{ messageId: "tooDeep", data: { depth: 2, max: 1 } }],
     },
+    {
+      name: "reports the second nested control at the exact crossing depth",
+      code: "function f() { if (a) { if (b) { if (c) { run(); } } } }",
+      options: [{ max: 2 }],
+      errors: [{ messageId: "tooDeep", data: { depth: 3, max: 2 } }],
+    },
+    {
+      name: "reports each branch that crosses the configured depth",
+      code: "function f() { if (a) { if (b) { if (c) { run(); } } } if (d) { if (e) { if (f) { run(); } } } }",
+      options: [{ max: 2 }],
+      errors: [
+        { messageId: "tooDeep", data: { depth: 3, max: 2 } },
+        { messageId: "tooDeep", data: { depth: 3, max: 2 } },
+      ],
+    },
   ],
+});
+
+describe("max-nesting-depth metadata", () => {
+  it("should expose its public rule contract", () => {
+    expect(maxNestingDepth.meta.docs?.description).toContain("nested");
+    expect(maxNestingDepth.meta.schema).toEqual([
+      expect.objectContaining({ additionalProperties: false }),
+    ]);
+    expect(maxNestingDepth.defaultOptions).toEqual([{ max: expect.any(Number) }]);
+  });
 });

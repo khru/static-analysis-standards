@@ -23,6 +23,18 @@ ruleTester.run("no-static-service-locator", noStaticServiceLocator, {
       code: "class Locator { static get() { const build = () => new Locator(); return build(); } }",
     },
     {
+      name: "a nested closure returning itself is not a locator",
+      code: "class Locator { static get() { const build = () => { return new Locator(); }; return build(); } }",
+    },
+    {
+      name: "nested class context is restored after the class expression exits",
+      code: "class Outer { static get() { return new Parser(); } } const Nested = class Inner { static get() { return new Parser(); } }; class Parser {}",
+    },
+    {
+      name: "function expressions inside locator methods are skipped",
+      code: "class Locator { static get() { const build = function() { return new Locator(); }; return build(); } }",
+    },
+    {
       name: "a static method returning a different class is not a locator",
       code: "class Factory { static get() { return new Parser(); } }",
     },
@@ -41,6 +53,26 @@ ruleTester.run("no-static-service-locator", noStaticServiceLocator, {
     {
       name: "a static method with a computed key cannot be classified and is not reported",
       code: 'class Locator { static ["get"]() { return new Locator(); } }',
+    },
+    {
+      name: "readonly static initialized state is allowed",
+      code: "class Registry { static readonly cache = {}; }",
+    },
+    {
+      name: "instance mutable state is not static state",
+      code: "class Registry { cache = {}; }",
+    },
+    {
+      name: "uninitialized readonly static state is allowed",
+      code: "class Registry { static readonly cache; }",
+    },
+    {
+      name: "a static method returning an unrelated constructor is allowed",
+      code: "class Locator { static get() { return new Parser(); } } class Parser {}",
+    },
+    {
+      name: "a following class with unrelated static method remains classified independently",
+      code: "class Locator { static get() { return new Parser(); } } class Parser { static parse() { return new Parser(); } }",
     },
   ],
   invalid: [
@@ -89,5 +121,47 @@ ruleTester.run("no-static-service-locator", noStaticServiceLocator, {
       code: "class Locator { static singleton() { return new Locator(); } }",
       errors: [{ messageId: "staticSelfReturning" }],
     },
+    {
+      name: "reports all supported self-returning locator method names",
+      code: "class Locator { static get() { return new Locator(); } static instance() { return new Locator(); } static getInstance() { return new Locator(); } static singleton() { return new Locator(); } }",
+      errors: [
+        { messageId: "staticSelfReturning" },
+        { messageId: "staticSelfReturning" },
+        { messageId: "staticSelfReturning" },
+        { messageId: "staticSelfReturning" },
+      ],
+    },
+    {
+      name: "reports writable static properties with mutable initializer forms",
+      code: "class Registry { static cache = {}; static list = []; static value = new Map(); static call = factory(); }",
+      errors: [
+        { messageId: "staticMutableState" },
+        { messageId: "staticMutableState" },
+        { messageId: "staticMutableState" },
+        { messageId: "staticMutableState" },
+      ],
+    },
+    {
+      name: "reports every initialized writable static property",
+      code: "class Registry { static first = {}; static second = []; }",
+      errors: [{ messageId: "staticMutableState" }, { messageId: "staticMutableState" }],
+    },
+    {
+      name: "allows readonly and instance properties beside mutable static state",
+      code: "class Registry { static cache = {}; static readonly fixed = {}; cache = {}; static readonly pending; }",
+      errors: [{ messageId: "staticMutableState" }],
+    },
+    {
+      name: "reports primitive static state when it is uninitialized",
+      code: "class Registry { static count; }",
+      errors: [{ messageId: "staticMutableState" }],
+    },
   ],
+});
+
+describe("no-static-service-locator metadata", () => {
+  it("should expose its public diagnostic descriptions", () => {
+    expect(noStaticServiceLocator.meta.docs?.description).toContain("static mutable state");
+    expect(noStaticServiceLocator.meta.messages.staticMutableState).toContain("Static");
+  });
 });
