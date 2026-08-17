@@ -19,7 +19,7 @@ deterministic architecture rules.
 
 ## Disposition
 
-**Do not adopt `eslint-plugin-boundaries` for the Community Ops quality gate.** Keep the
+**Do not adopt `eslint-plugin-boundaries` for the package quality gate.** Keep the
 plugin's own deterministic architecture rules (`standards/architecture/depend-on-port-not-adapter`
 and `standards/architecture/no-concrete-repository-dependency`).
 

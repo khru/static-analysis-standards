@@ -9,7 +9,7 @@ class PublishSmokeError extends Error {}
 
 const exec = promisify(execFile);
 const packageDirectory = fileURLToPath(new globalThis.URL("..", import.meta.url));
-const smokeDirectory = await mkdtemp(join(os.tmpdir(), "community-ops-publish-smoke-"));
+const smokeDirectory = await mkdtemp(join(os.tmpdir(), "static-analysis-publish-smoke-"));
 
 try {
   const { stdout } = await exec("pnpm", ["pack", "--pack-destination", smokeDirectory], {

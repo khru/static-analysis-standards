@@ -2,8 +2,8 @@
   "name": "@evalverde/static-analysis-standards",
   "version": "0.1.0",
   "type": "module",
-  "description": "Community Ops static analysis standards: deterministic quality, domain, architecture and test-smell rules with a non-blocking strict heuristics preset and a data-driven registry.",
-  "author": "Community Ops contributors",
+  "description": "Static analysis standards: deterministic quality, domain, architecture and test-smell rules with a non-blocking strict heuristics preset and a data-driven registry.",
+  "author": "Evalverde contributors",
   "license": "MIT",
   "repository": {
     "type": "git",

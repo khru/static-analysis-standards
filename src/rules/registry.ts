@@ -622,28 +622,28 @@ function toRules(
 export function buildConfigs(): Record<string, Linter.Config> {
   return {
     recommended: {
-      name: "community-ops/static-analysis-standards/recommended",
+      name: "static-analysis-standards/recommended",
       rules: toRules(
         REGISTRY.filter((rule) => rule.recommended),
         "error",
       ),
     },
     strict: {
-      name: "community-ops/static-analysis-standards/strict",
+      name: "static-analysis-standards/strict",
       rules: toRules(
         REGISTRY.filter((rule) => rule.strict),
         "warn",
       ),
     },
     architecture: {
-      name: "community-ops/static-analysis-standards/architecture",
+      name: "static-analysis-standards/architecture",
       rules: toRules(
         REGISTRY.filter((rule) => rule.family === "architecture"),
         "error",
       ),
     },
     testing: {
-      name: "community-ops/static-analysis-standards/testing",
+      name: "static-analysis-standards/testing",
       rules: toRules(
         REGISTRY.filter((rule) => rule.family === "testing"),
         "error",

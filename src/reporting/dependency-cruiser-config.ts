@@ -54,6 +54,6 @@ export interface RepositoryAnalysisTarget {
 
 export const repositoryAnalysisTargets: readonly RepositoryAnalysisTarget[] = [
   { name: "plugin", directory: ".", entryPoints: ["src"] },
-  { name: "api", directory: "../community-ops-api", entryPoints: ["src"] },
-  { name: "web", directory: "../community-ops-web", entryPoints: ["src"] },
+  { name: "api", directory: "../api", entryPoints: ["src"] },
+  { name: "web", directory: "../web", entryPoints: ["src"] },
 ];

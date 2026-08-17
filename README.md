@@ -1,6 +1,6 @@
-# Community Ops static analysis standards
+# Static analysis standards
 
-`@evalverde/static-analysis-standards` is the pinned ESLint plugin that encodes the Community Ops engineering discipline as deterministic lint rules and non-blocking review heuristics. Each rule flags a concrete code or test smell and reports a suggested refactor in its message, so the discipline is enforced by the linter instead of by reviewer taste.
+`@evalverde/static-analysis-standards` is an ESLint plugin that encodes engineering discipline as deterministic lint rules and non-blocking review heuristics. Each rule flags a concrete code or test smell and reports a suggested refactor in its message, so the discipline is enforced by the linter instead of by reviewer taste.
 
 The plugin is developed with strict TypeScript, Vitest and the `@typescript-eslint/rule-tester`, and is published to npm and GitHub Packages for application repositories.
 
@@ -135,8 +135,8 @@ The do-not-lint contract: an absolute metric assertion such as “a class with m
 
 ```text
 pnpm run sa:report plugin   # analyze only static-analysis-standards/src
-pnpm run sa:report api      # analyze only community-ops-api/src
-pnpm run sa:report web      # analyze only community-ops-web/src
+pnpm run sa:report api      # analyze only the configured API target
+pnpm run sa:report web      # analyze only the configured web target
 ```
 
 - `architecture.json` — the canonical analysis: per-target module/folder Martin metrics (afferent, efferent, instability) and the `cycle`, `forbidden-direction` and `stable-dependency` findings with severity, plus ESLint-compatible diagnostics keyed by file.
