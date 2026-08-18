@@ -1,6 +1,6 @@
 {
   "name": "@evalverde/static-analysis-standards",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Static analysis standards: deterministic quality, domain, architecture and test-smell rules with a non-blocking strict heuristics preset and a data-driven registry.",
   "author": "Evalverde contributors",

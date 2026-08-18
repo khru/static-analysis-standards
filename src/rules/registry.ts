@@ -54,6 +54,7 @@ import { noInterfacePrefixSuffix } from "./quality/no-interface-prefix-suffix.js
 import { noLocalTimeConstruction } from "./quality/no-local-time-construction.js";
 import { noMagicNumbers } from "./quality/no-magic-numbers.js";
 import { noMagicStrings } from "./quality/no-magic-strings.js";
+import { noHighCognitiveBooleanExpression } from "./quality/no-high-cognitive-boolean-expression.js";
 import { noMixedAbstractionLevels } from "./quality/no-mixed-abstraction-levels.js";
 import { noMixedEffectCategories } from "./quality/no-mixed-effect-categories.js";
 import { noStringlyTypedDispatch } from "./quality/no-stringly-typed-dispatch.js";
@@ -149,6 +150,14 @@ export const REGISTRY: readonly RegistryRule[] = [
     recommended: true,
     strict: true,
     module: noGenericError,
+  },
+  {
+    name: "no-high-cognitive-boolean-expression",
+    family: "quality",
+    deterministic: true,
+    recommended: true,
+    strict: true,
+    module: noHighCognitiveBooleanExpression,
   },
   {
     name: "no-generic-names-in-domain",

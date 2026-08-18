@@ -15,7 +15,7 @@ describe("plugin surface", () => {
   });
 
   it("registers the sixty-three rules under the standards prefix", () => {
-    expect(Object.keys(rules)).toHaveLength(63);
+    expect(Object.keys(rules)).toHaveLength(64);
   });
 
   it("registers the deterministic quality rules", () => {
@@ -104,6 +104,7 @@ describe("plugin surface", () => {
       "standards/quality/no-direct-process-env-access": "error",
       "standards/quality/no-empty-catch": "error",
       "standards/quality/no-generic-error": "error",
+      "standards/quality/no-high-cognitive-boolean-expression": "error",
       "standards/quality/no-generic-names-in-domain": "error",
       "standards/quality/no-interface-prefix-suffix": "error",
       "standards/quality/no-local-time-construction": "error",
@@ -132,6 +133,7 @@ describe("plugin surface", () => {
       "standards/quality/no-direct-process-env-access": "warn",
       "standards/quality/no-empty-catch": "warn",
       "standards/quality/no-generic-error": "warn",
+      "standards/quality/no-high-cognitive-boolean-expression": "warn",
       "standards/quality/no-generic-names-in-domain": "warn",
       "standards/quality/no-interface-prefix-suffix": "warn",
       "standards/quality/no-local-time-construction": "warn",

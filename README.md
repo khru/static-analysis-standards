@@ -49,38 +49,39 @@ Rules are addressable by their `standards/<category>/<name>` id.
 
 Heuristics are non-blocking review signals: they never assert an absolute defect from a metric and every message says `Review candidate: ...`. They ship only in the `strict` preset as warnings.
 
-| Rule                               | Evidence                                      | Purpose                                                                                                      |
-| ---------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `binary-operator-in-name`          | Binary Operator in Name                       | Reports names that embed a binary operator word (and, or, not, in, between).                                 |
-| `callback-hell`                    | Callback Hell                                 | Reports function expressions nested at least three callback levels deep.                                     |
-| `combinatorial-explosion`          | Combinatorial Explosion                       | Reports functions with at least four conditional branches.                                                   |
-| `complicated-boolean-expression`   | Complicated Boolean Expression                | Reports boolean conditions combining at least three operands.                                                |
-| `complicated-regex-expression`     | Complicated Regex Expression                  | Reports regular expressions with a long pattern or many groups.                                              |
-| `conditional-complexity`           | Conditional Complexity                        | Reports functions with at least six decision points.                                                         |
-| `data-clump`                       | Data Clump                                    | Reports a parameter group repeated across at least two functions in the same file.                           |
-| `disconnected-method-clusters`     | Single Responsibility                         | Reports classes whose methods touch pairwise-disjoint instance-state clusters.                               |
-| `fat-interface-candidate`          | Interface Segregation                         | Reports interfaces that expose more than ten members.                                                        |
-| `feature-envy-candidate`           | Feature Envy                                  | Reports methods that read more members of their collaborators than of their own state.                       |
-| `few-instance-variables`           | Calisthenics: few instance variables          | Reports classes holding more than five instance variables.                                                   |
-| `first-class-collection-candidate` | Calisthenics: first class collections         | Reports classes whose only instance field is a raw collection type.                                          |
-| `global-data`                      | Global Data                                   | Reports mutable top-level declarations in domain and application files.                                      |
-| `imperative-loops`                 | Imperative Loops                              | Reports imperative loops in domain and application files.                                                    |
-| `inappropriate-static`             | Inappropriate Static                          | Reports instance methods that never reference instance state.                                                |
-| `long-parameter-list`              | Long Parameter List                           | Reports functions and methods with more than four parameters.                                                |
-| `max-one-indentation`              | Calisthenics: one level of indentation        | Reports function bodies that nest statements more than one level deep.                                       |
-| `middle-man`                       | Middle Man                                    | Reports methods whose only behavior is forwarding a call to another object.                                  |
-| `mutable-data`                     | Mutable Data                                  | Reports `let` declarations in domain and application files.                                                  |
-| `no-abbreviations`                 | Calisthenics: don't abbreviate                | Reports abbreviated identifiers that shorten intent.                                                         |
-| `no-concrete-low-level-dependency` | Dependency Inversion                          | Reports domain/application imports of concrete persistence, adapter, client or mapper modules.               |
-| `no-else`                          | Calisthenics: don't use the else keyword      | Reports `else` branches replaceable by early returns.                                                        |
-| `no-getters-setters`               | Calisthenics: no getters/setters              | Reports accessor methods in domain and application code.                                                     |
-| `null-check`                       | Null Check                                    | Reports defensive null/undefined checks in domain and application files.                                     |
-| `one-dot-per-line`                 | Calisthenics: one dot per line                | Reports chains of more than one member call per statement; `this`/`super`-rooted chains allow one extra dot. |
-| `small-class-candidate`            | Calisthenics: keep all entities small         | Reports classes exposing more than seven methods.                                                            |
-| `status-variable`                  | Status Variable                               | Reports a local variable initialized with a status value that is reassigned within the same function.        |
-| `temporary-field`                  | Temporary Field                               | Reports an instance field read by a single method while the class exposes at least two methods.              |
-| `what-comment`                     | What Comment                                  | Reports comments that only restate the code they annotate.                                                   |
-| `wrap-primitives-candidate`        | Calisthenics: wrap all primitives and strings | Reports primitive-typed fields in domain and application classes.                                            |
+| Rule                                   | Evidence                                      | Purpose                                                                                                      |
+| -------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `binary-operator-in-name`              | Binary Operator in Name                       | Reports names that embed a binary operator word (and, or, not, in, between).                                 |
+| `callback-hell`                        | Callback Hell                                 | Reports function expressions nested at least three callback levels deep.                                     |
+| `combinatorial-explosion`              | Combinatorial Explosion                       | Reports functions with at least four conditional branches.                                                   |
+| `complicated-boolean-expression`       | Complicated Boolean Expression                | Reports boolean conditions combining at least three operands.                                                |
+| `no-high-cognitive-boolean-expression` | High Cognitive Boolean Expression             | Reports boolean conditions whose comparisons and logical operators exceed the cognitive-point limit.         |
+| `complicated-regex-expression`         | Complicated Regex Expression                  | Reports regular expressions with a long pattern or many groups.                                              |
+| `conditional-complexity`               | Conditional Complexity                        | Reports functions with at least six decision points.                                                         |
+| `data-clump`                           | Data Clump                                    | Reports a parameter group repeated across at least two functions in the same file.                           |
+| `disconnected-method-clusters`         | Single Responsibility                         | Reports classes whose methods touch pairwise-disjoint instance-state clusters.                               |
+| `fat-interface-candidate`              | Interface Segregation                         | Reports interfaces that expose more than ten members.                                                        |
+| `feature-envy-candidate`               | Feature Envy                                  | Reports methods that read more members of their collaborators than of their own state.                       |
+| `few-instance-variables`               | Calisthenics: few instance variables          | Reports classes holding more than five instance variables.                                                   |
+| `first-class-collection-candidate`     | Calisthenics: first class collections         | Reports classes whose only instance field is a raw collection type.                                          |
+| `global-data`                          | Global Data                                   | Reports mutable top-level declarations in domain and application files.                                      |
+| `imperative-loops`                     | Imperative Loops                              | Reports imperative loops in domain and application files.                                                    |
+| `inappropriate-static`                 | Inappropriate Static                          | Reports instance methods that never reference instance state.                                                |
+| `long-parameter-list`                  | Long Parameter List                           | Reports functions and methods with more than four parameters.                                                |
+| `max-one-indentation`                  | Calisthenics: one level of indentation        | Reports function bodies that nest statements more than one level deep.                                       |
+| `middle-man`                           | Middle Man                                    | Reports methods whose only behavior is forwarding a call to another object.                                  |
+| `mutable-data`                         | Mutable Data                                  | Reports `let` declarations in domain and application files.                                                  |
+| `no-abbreviations`                     | Calisthenics: don't abbreviate                | Reports abbreviated identifiers that shorten intent.                                                         |
+| `no-concrete-low-level-dependency`     | Dependency Inversion                          | Reports domain/application imports of concrete persistence, adapter, client or mapper modules.               |
+| `no-else`                              | Calisthenics: don't use the else keyword      | Reports `else` branches replaceable by early returns.                                                        |
+| `no-getters-setters`                   | Calisthenics: no getters/setters              | Reports accessor methods in domain and application code.                                                     |
+| `null-check`                           | Null Check                                    | Reports defensive null/undefined checks in domain and application files.                                     |
+| `one-dot-per-line`                     | Calisthenics: one dot per line                | Reports chains of more than one member call per statement; `this`/`super`-rooted chains allow one extra dot. |
+| `small-class-candidate`                | Calisthenics: keep all entities small         | Reports classes exposing more than seven methods.                                                            |
+| `status-variable`                      | Status Variable                               | Reports a local variable initialized with a status value that is reassigned within the same function.        |
+| `temporary-field`                      | Temporary Field                               | Reports an instance field read by a single method while the class exposes at least two methods.              |
+| `what-comment`                         | What Comment                                  | Reports comments that only restate the code they annotate.                                                   |
+| `wrap-primitives-candidate`            | Calisthenics: wrap all primitives and strings | Reports primitive-typed fields in domain and application classes.                                            |
 
 ### `standards/domain/*` — framework-independent domain
 

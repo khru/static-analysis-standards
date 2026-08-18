@@ -17,6 +17,8 @@ export const RULE_DESCRIPTIONS = {
     "Problem: a catch clause has no statements. Origin: failure handling was omitted or hidden. Why: operational failures disappear and callers cannot choose a policy. Solutions: recover, translate/rethrow a typed error, or make best-effort behavior observable.",
   "no-generic-error":
     "Problem: code constructs the unqualified Error type. Origin: the failure has no owning vocabulary. Why: callers cannot distinguish intent and mappings fall back to magic strings. Solutions: define a typed local error and closed message/code catalog.",
+  "no-high-cognitive-boolean-expression":
+    "Problem: a boolean expression requires too many simultaneous decisions. Origin: comparisons and logical alternatives were compressed into one condition. Why: precedence and branching impose excessive cognitive load. Solutions: extract named predicates and compose them at the policy boundary.",
   "no-generic-names-in-domain":
     "Problem: domain/application code uses catalogued generic names. Origin: implementation placeholders replaced business language. Why: the model requires implementation inspection. Solutions: name the business role, state, invariant or operation explicitly.",
   "no-interface-prefix-suffix":
