@@ -3,6 +3,10 @@
 All notable changes to `@evalverde/static-analysis-standards` are recorded
 in this file.
 
+## [0.1.3] - 2026-08-18
+
+- Harden cognitive boolean expression boundaries and tests.
+
 ## [0.1.2] - 2026-08-18
 
 - Add `no-high-cognitive-boolean-expression` to detect boolean conditions with excessive cognitive load.
