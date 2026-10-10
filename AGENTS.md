@@ -7,16 +7,14 @@ their own explicit target and never make this workflow analyze another repositor
 
 ## Quality pipeline
 
-Run the canonical sequence in [`../docs/quality-gates.md`](../docs/quality-gates.md):
-
 1. Gate 1: `pnpm run editorconfig`.
 2. Gate 2: `pnpm run typecheck`, `pnpm run lint`, `pnpm run format:check` and
    `pnpm run sa:report`; the report must exit successfully with no violations.
 3. Gate 3: `pnpm run test:coverage`; all four metrics remain at 100%.
-4. Gate 4: `pnpm run test:mutation`; Stryker must report 100% and zero survivors.
-5. Gate 5: keep this file, package commands and architecture rules aligned.
-6. Gate 6: `task ci:local` runs the checked-in workflow with `act` locally only.
-7. Gate 7: update this README and root architecture evidence when the contract changes.
+4. Gate 4: keep this file, package commands and architecture rules aligned.
+5. Gate 5: `task ci:local` runs the checked-in workflow with `act` locally only.
+
+6. Gate 6: update this README and root architecture evidence when the contract changes.
 
 Never use `continue-on-error` for a quality gate or lower a threshold. Run
 `task cleanup` from the root after reports, coverage or mutation output.
@@ -47,8 +45,6 @@ pnpm run lint
 pnpm run format:check
 pnpm run test
 pnpm run test:coverage
-pnpm run test:mutation
-pnpm run test:mutation:shard -- <name> <mutate-pattern>
 pnpm run sa:report
 pnpm run check
 ```

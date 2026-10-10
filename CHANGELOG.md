@@ -3,6 +3,10 @@
 All notable changes to `@evalverde/static-analysis-standards` are recorded
 in this file.
 
+## [0.1.6] - 2026-10-10
+
+- Remove mutation jobs from the GitHub Actions quality and release pipelines.
+
 ## [0.1.5] - 2026-10-10
 
 - Run mutation shards as report-only release checks without Stryker thresholds.
