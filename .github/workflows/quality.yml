@@ -22,7 +22,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm rebuild esbuild
-      - run: pnpm run editorconfig
+      - name: Check EditorConfig
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm run editorconfig
       - run: pnpm run typecheck
       - run: pnpm run format:check
       - run: pnpm run lint

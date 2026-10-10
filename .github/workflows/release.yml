@@ -56,7 +56,10 @@ jobs:
           test "$(node -p "require('./package.json').version")" = "${RELEASE_TAG#v}"
           test "$(node -p "require('./package.json').private === true")" != "true"
           test "$(node -p "require('./package.json').name")" = "$PACKAGE_NAME"
-      - run: pnpm run editorconfig
+      - name: Check EditorConfig
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm run editorconfig
       - run: pnpm run typecheck
       - run: pnpm run format:check
       - run: pnpm run lint
