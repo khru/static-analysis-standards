@@ -19,6 +19,7 @@ permissions:
 env:
   PACKAGE_NAME: "@evalverde/static-analysis-standards"
 
+jobs:
   release:
     runs-on: ubuntu-latest
     environment: package-release
