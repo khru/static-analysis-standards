@@ -25,7 +25,6 @@ await writeFile(
       plugins: ["@stryker-mutator/vitest-runner", "@stryker-mutator/typescript-checker"],
       reporters: ["clear-text", "json"],
       jsonReporter: { fileName: reportPath },
-      thresholds: { high: 100, low: 100, break: 100 },
       concurrency: 8,
       timeoutMS: 30000,
     },

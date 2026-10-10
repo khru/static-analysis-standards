@@ -3,6 +3,10 @@
 All notable changes to `@evalverde/static-analysis-standards` are recorded
 in this file.
 
+## [0.1.5] - 2026-10-10
+
+- Run mutation shards as report-only release checks without Stryker thresholds.
+
 ## [0.1.4] - 2026-10-10
 
 - Refresh development dependencies with pnpm, retaining the latest TypeScript 6
