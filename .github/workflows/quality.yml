@@ -22,9 +22,22 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm rebuild esbuild
+      - name: Install pinned EditorConfig core
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/editorconfig-checker-linux-amd64.tar.gz"
+          curl --fail --location --retry 3 \
+            --output "$archive" \
+            https://github.com/editorconfig-checker/editorconfig-checker/releases/download/v4.0.2/editorconfig-checker-linux-amd64.tar.gz
+          printf '%s  %s\n' \
+            44efaef3ed14c6ab52eb87481d78e5e5c204796dccf26e2f4598a61ba17f8003 \
+            "$archive" | sha256sum --check
+          mkdir -p node_modules/editorconfig-checker/bin/v4.0.2
+          tar -xzf "$archive" -C node_modules/editorconfig-checker/bin/v4.0.2
+          chmod +x node_modules/editorconfig-checker/bin/v4.0.2/editorconfig-checker
       - name: Check EditorConfig
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          EC_VERSION: v4.0.2
         run: pnpm run editorconfig
       - run: pnpm run typecheck
       - run: pnpm run format:check
