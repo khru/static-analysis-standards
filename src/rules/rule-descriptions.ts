@@ -21,6 +21,8 @@ export const RULE_DESCRIPTIONS = {
     "Problem: a boolean expression requires too many simultaneous decisions. Origin: comparisons and logical alternatives were compressed into one condition. Why: precedence and branching impose excessive cognitive load. Solutions: extract named predicates and compose them at the policy boundary.",
   "no-generic-names-in-domain":
     "Problem: domain/application code uses catalogued generic names. Origin: implementation placeholders replaced business language. Why: the model requires implementation inspection. Solutions: name the business role, state, invariant or operation explicitly.",
+  "no-fallacious-method-name":
+    "Problem: a getter- or setter-shaped method name disagrees with its return behavior. Origin: an action and a query contract were compressed into one misleading name. Why: callers infer the wrong side effects or value semantics and misuse becomes likely. Solutions: return the promised value, make the action name explicit, or keep only a documented fluent return from a setter.",
   "no-interface-prefix-suffix":
     "Problem: an interface uses I-prefix or Interface-suffix naming. Origin: syntax conventions replaced capability naming. Why: names expose the language construct instead of responsibility. Solutions: name the capability or port directly.",
   "no-local-time-construction":
@@ -33,12 +35,16 @@ export const RULE_DESCRIPTIONS = {
     "Problem: one function combines inline computation with collaborator orchestration. Origin: mechanism was added beside policy. Why: the boundary is unclear and changes have broad impact. Solutions: extract mechanism behind a port/adapter and keep one abstraction level per method.",
   "no-mixed-effect-categories":
     "Problem: a function returns a value while also mutating state. Origin: query and command behavior were combined. Why: ordering, retries and tests become difficult. Solutions: separate query and command and isolate mutation behind a collaborator.",
+  "no-public-mutable-properties":
+    "Problem: a domain/application class exposes a mutable instance property publicly. Origin: representation became the object's API. Why: callers can bypass invariants and coupling spreads to every consumer. Solutions: make the state readonly/private or expose an intention-revealing operation/value object.",
   "no-nested-ternary":
     "Problem: a conditional expression contains another conditional expression. Origin: compact syntax replaced named decision logic. Why: evaluation order and edge cases are hard to scan. Solutions: use guard clauses or a named decision function.",
   "no-static-service-locator":
     "Problem: mutable static state or a self-constructing locator hides composition. Origin: ambient lookup replaced explicit wiring. Why: dependencies are invisible and state leaks between tests. Solutions: compose at the root and inject typed ports/factories.",
   "no-stringly-typed-dispatch":
     "Problem: strings select behavior through switch or if chains. Origin: closed variants were represented as arbitrary text. Why: renames and unsupported values evade the compiler. Solutions: use a discriminated union and typed data-driven map.",
+  "no-type-embedded-in-name":
+    "Problem: an annotated identifier repeats a primitive or collection representation such as String, List, Map or Set. Origin: implementation type was used as the name instead of the domain concept. Why: representation leaks into callers and a later type change forces needless renames. Solutions: name the role, identity, state or concept and leave representation to the type annotation.",
   "no-uncommunicative-names":
     "Problem: vague or one-character names hide intent. Origin: placeholder names survived implementation growth. Why: every use requires source inspection. Solutions: name the role, effect, unit or business concept explicitly.",
   "prefer-data-driven-dispatch":
@@ -63,6 +69,8 @@ export const RULE_DESCRIPTIONS = {
     "Problem: a class holds one array/tuple or collection-typed field. Origin: collection behavior lacks an owner. Why: invariants and operations duplicate at call sites. Solutions: introduce a collection value object when it owns rules.",
   "max-one-indentation":
     "Problem: a function reaches the configured nested block depth. Origin: several blocks were placed in one operation. Why: the primary action is visually hidden. Solutions: guard early and extract nested policy; document necessary mechanical nesting.",
+  "max-two-instance-variables":
+    "Problem: a domain/application class owns more than two instance variables. Origin: state from multiple responsibilities accumulated in one object. Why: invariants, lifecycle and change ownership become harder to see. Solutions: group cohesive state into a value object, split the class, or document why the boundary is materially cohesive.",
   "no-abbreviations":
     "Problem: an identifier is one to three lowercase alphanumeric characters outside the allowlist. Origin: local names were shortened for convenience. Why: searchability and shared language degrade. Solutions: use the complete term or an established protocol acronym.",
   "no-concrete-low-level-dependency":

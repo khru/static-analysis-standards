@@ -18,6 +18,7 @@ import { featureEnvyCandidate } from "./quality/feature-envy-candidate.js";
 import { fewInstanceVariables } from "./quality/few-instance-variables.js";
 import { firstClassCollectionCandidate } from "./quality/first-class-collection-candidate.js";
 import { maxOneIndentation } from "./quality/max-one-indentation.js";
+import { maxTwoInstanceVariables } from "./quality/max-two-instance-variables.js";
 import { noAbbreviations } from "./quality/no-abbreviations.js";
 import { noConcreteLowLevelDependency } from "./quality/no-concrete-low-level-dependency.js";
 import { noElse } from "./quality/no-else.js";
@@ -50,6 +51,7 @@ import { noGenericNamesInDomain } from "./quality/no-generic-names-in-domain.js"
 import { noUncommunicativeNames } from "./quality/no-uncommunicative-names.js";
 import { noAbbreviatedNames } from "./quality/no-abbreviated-names.js";
 import { noDeprecatedApiUsage } from "./quality/no-deprecated-api-usage.js";
+import { noFallaciousMethodName } from "./quality/no-fallacious-method-name.js";
 import { noInterfacePrefixSuffix } from "./quality/no-interface-prefix-suffix.js";
 import { noLocalTimeConstruction } from "./quality/no-local-time-construction.js";
 import { noMagicNumbers } from "./quality/no-magic-numbers.js";
@@ -57,6 +59,8 @@ import { noMagicStrings } from "./quality/no-magic-strings.js";
 import { noHighCognitiveBooleanExpression } from "./quality/no-high-cognitive-boolean-expression.js";
 import { noMixedAbstractionLevels } from "./quality/no-mixed-abstraction-levels.js";
 import { noMixedEffectCategories } from "./quality/no-mixed-effect-categories.js";
+import { noPublicMutableProperties } from "./quality/no-public-mutable-properties.js";
+import { noTypeEmbeddedInName } from "./quality/no-type-embedded-in-name.js";
 import { noStringlyTypedDispatch } from "./quality/no-stringly-typed-dispatch.js";
 import { preferDataDrivenDispatch } from "./quality/prefer-data-driven-dispatch.js";
 import { preferIntlDateFormatting } from "./quality/prefer-intl-date-formatting.js";
@@ -168,6 +172,14 @@ export const REGISTRY: readonly RegistryRule[] = [
     module: noGenericNamesInDomain,
   },
   {
+    name: "no-fallacious-method-name",
+    family: "quality",
+    deterministic: false,
+    recommended: false,
+    strict: true,
+    module: noFallaciousMethodName,
+  },
+  {
     name: "no-interface-prefix-suffix",
     family: "quality",
     deterministic: true,
@@ -216,6 +228,14 @@ export const REGISTRY: readonly RegistryRule[] = [
     module: noMixedEffectCategories,
   },
   {
+    name: "no-public-mutable-properties",
+    family: "quality",
+    deterministic: false,
+    recommended: false,
+    strict: true,
+    module: noPublicMutableProperties,
+  },
+  {
     name: "no-nested-ternary",
     family: "quality",
     deterministic: true,
@@ -238,6 +258,14 @@ export const REGISTRY: readonly RegistryRule[] = [
     recommended: true,
     strict: true,
     module: noStringlyTypedDispatch,
+  },
+  {
+    name: "no-type-embedded-in-name",
+    family: "quality",
+    deterministic: false,
+    recommended: false,
+    strict: true,
+    module: noTypeEmbeddedInName,
   },
   {
     name: "no-uncommunicative-names",
@@ -334,6 +362,14 @@ export const REGISTRY: readonly RegistryRule[] = [
     recommended: false,
     strict: true,
     module: maxOneIndentation,
+  },
+  {
+    name: "max-two-instance-variables",
+    family: "quality",
+    deterministic: false,
+    recommended: false,
+    strict: true,
+    module: maxTwoInstanceVariables,
   },
   {
     name: "no-abbreviations",

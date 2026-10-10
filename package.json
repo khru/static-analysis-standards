@@ -1,6 +1,6 @@
 {
   "name": "@evalverde/static-analysis-standards",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "Static analysis standards: deterministic quality, domain, architecture and test-smell rules with a non-blocking strict heuristics preset and a data-driven registry.",
   "author": "Evalverde contributors",
@@ -39,7 +39,9 @@
   },
   "sideEffects": false,
   "scripts": {
+    "prebuild": "node scripts/clean-dist.mjs",
     "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build && node scripts/verify-package.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -52,7 +54,7 @@
     "test:mutation:reporting": "stryker run stryker.reporting.config.json --reporters clear-text,progress",
     "test:mutation": "stryker run --reporters clear-text,progress",
     "test:mutation:shard": "node scripts/run-mutation-shard.mjs",
-    "publish:check": "pnpm run build && pnpm exec publint && pnpm exec attw --pack . --ignore-rules cjs-resolves-to-esm",
+    "publish:check": "pnpm run build && node scripts/verify-package.mjs && pnpm exec publint && pnpm exec attw --pack . --ignore-rules cjs-resolves-to-esm",
     "publish:smoke": "pnpm run build && node scripts/publish-smoke.mjs",
     "check": "pnpm run editorconfig && pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run sa:report plugin"
   },
@@ -62,24 +64,24 @@
     "typescript-eslint": "^8.65.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
     "@eslint/js": "^10.0.1",
-    "@types/node": "^26.1.2",
-    "@typescript-eslint/rule-tester": "8.66.0",
-    "@typescript-eslint/utils": "^8.65.0",
-    "@vitest/coverage-v8": "^4.1.10",
-    "@stryker-mutator/core": "9.6.1",
-    "@stryker-mutator/typescript-checker": "9.6.1",
-    "@stryker-mutator/vitest-runner": "9.6.1",
-    "dependency-cruiser": "18.1.1",
-    "editorconfig-checker": "^6.1.1",
-    "eslint": "^10.8.0",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/typescript-checker": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "@types/node": "^26.6.4",
+    "@typescript-eslint/rule-tester": "8.71.1",
+    "@typescript-eslint/utils": "^8.71.1",
+    "@vitest/coverage-v8": "^5.0.3",
+    "dependency-cruiser": "18.5.0",
+    "editorconfig-checker": "^7.0.0",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
     "jiti": "2.7.0",
-    "@arethetypeswrong/cli": "0.18.5",
-    "publint": "0.3.23",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.9",
+    "publint": "0.3.25",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.65.0",
-    "vitest": "^4.1.10"
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3"
   }
 }

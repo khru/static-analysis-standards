@@ -125,7 +125,8 @@ export const SMELL_CATALOG: readonly SmellEntry[] = [
     slug: "fallacious-method-name",
     title: "Fallacious Method Name",
     category: "Names",
-    disposition: "manual-review",
+    disposition: "covered",
+    rule_id: "no-fallacious-method-name",
   },
   {
     slug: "fate-over-action",
@@ -197,7 +198,8 @@ export const SMELL_CATALOG: readonly SmellEntry[] = [
     slug: "indecent-exposure",
     title: "Indecent Exposure",
     category: "Data",
-    disposition: "manual-review",
+    disposition: "covered",
+    rule_id: "no-public-mutable-properties",
   },
   {
     slug: "insider-trading",
@@ -354,7 +356,7 @@ export const SMELL_CATALOG: readonly SmellEntry[] = [
     title: "Type Embedded in Name",
     category: "Names",
     disposition: "covered",
-    rule_id: "no-interface-prefix-suffix",
+    rule_id: "no-type-embedded-in-name",
   },
   {
     slug: "uncommunicative-name",

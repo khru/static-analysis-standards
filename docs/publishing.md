@@ -42,6 +42,11 @@ checks tag/version consistency, creates the package archive, publishes it with
 creates the GitHub release. A failed gate stops before publish. A failed
 post-publish step does not retract the npm version automatically.
 
+The package also has a `prepack` guard. Every `pnpm pack` or publish operation
+builds the TypeScript entry point and fails if `dist/index.js`, its declaration,
+or source maps are missing. The publish smoke test then inspects the actual
+tarball and imports the installed package from an isolated consumer.
+
 A release can also be started with `workflow_dispatch` by entering an existing
 `vX.Y.Z` tag. The workflow checks out that tag, so dispatch does not publish
 uncommitted branch contents.
@@ -54,7 +59,7 @@ local, ignored file:
 
 ```sh
 act workflow_dispatch \
-  -W .github/workflows/release-package.yml \
+  -W .github/workflows/release.yml \
   --input tag=v0.1.0 \
   --secret-file .secrets
 ```

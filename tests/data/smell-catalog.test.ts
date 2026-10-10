@@ -44,9 +44,9 @@ describe("tdd-refactor smell catalog", () => {
     },
   );
 
-  it("maps exactly the twelve covered smells to registered plugin rules", () => {
+  it("maps exactly the fourteen covered smells to registered plugin rules", () => {
     const covered = SMELL_CATALOG.filter((entry) => entry.disposition === "covered");
-    expect(covered).toHaveLength(12);
+    expect(covered).toHaveLength(14);
   });
 
   it.each(SMELL_CATALOG.filter((entry) => entry.disposition === "covered"))(
@@ -86,7 +86,7 @@ describe("tdd-refactor smell catalog", () => {
 
   it("keeps the remaining smells for manual review without a plugin rule", () => {
     const manual = SMELL_CATALOG.filter((entry) => entry.disposition === "manual-review");
-    expect(manual).toHaveLength(24);
+    expect(manual).toHaveLength(22);
   });
 
   it.each(SMELL_CATALOG.filter((entry) => entry.disposition === "manual-review"))(

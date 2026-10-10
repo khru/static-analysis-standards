@@ -30,14 +30,17 @@ Rules are addressable by their `standards/<category>/<name>` id.
 | `no-generic-error`                   | Reports generic `Error` construction outside test files. Refactor suggested: throw a typed error from the owning context's error catalog.                                                                                                                         |
 | `no-generic-names-in-domain`         | Reports generic placeholder names in domain and application code. Refactor suggested: rename with the ubiquitous language (Uncommunicative Name / Obscured Intent).                                                                                               |
 | `no-interface-prefix-suffix`         | Reports `I*` and `*Interface` type names. Refactor suggested: name the type by the role it plays in the domain.                                                                                                                                                   |
+| `no-fallacious-method-name`          | Reports getter/setter-shaped methods whose return behavior contradicts their names. Refactor suggested: align the method name with its observable contract.                                                                                                       |
 | `no-local-time-construction`         | Reports local-time `Date` construction and component reads. Refactor suggested: use UTC/instant semantics (Hidden Dependencies).                                                                                                                                  |
 | `no-magic-numbers`                   | Reports unexplained numeric literals. Refactor suggested: name them with domain constants.                                                                                                                                                                        |
 | `no-magic-strings`                   | Reports unexplained string literals. Refactor suggested: use the owning glossary or catalog.                                                                                                                                                                      |
 | `no-mixed-abstraction-levels`        | Reports statements that mix levels of abstraction in one body. Refactor suggested: extract and name each level (Mixed Levels of Abstraction).                                                                                                                     |
 | `no-mixed-effect-categories`         | Reports methods that mix queries and commands. Refactor suggested: separate side-effect-free queries from commands (Command Query Separation).                                                                                                                    |
+| `no-public-mutable-properties`       | Review candidate for public mutable state in domain/application classes. Suggested improvement: encapsulate invariants behind operations or readonly/value-object state (Indecent Exposure).                                                                      |
 | `no-nested-ternary`                  | Reports nested ternary expressions. Refactor suggested: extract the condition or use guard clauses (Conditional Complexity).                                                                                                                                      |
 | `no-static-service-locator`          | Reports static mutable state and static self-returning methods that act as service locators. Refactor suggested: inject dependencies (Global Data / Inappropriate Static).                                                                                        |
 | `no-stringly-typed-dispatch`         | Reports string-based dispatch through if/switch chains. Refactor suggested: use data-driven dispatch (Stringly Typed).                                                                                                                                            |
+| `no-type-embedded-in-name`           | Reports annotated names that repeat their representation (`String`, `List`, `Map`, etc.). Refactor suggested: name the domain concept instead.                                                                                                                    |
 | `no-uncommunicative-names`           | Reports uncommunicative names in production code. Refactor suggested: rename with an intention-revealing name (Uncommunicative Name).                                                                                                                             |
 | `prefer-data-driven-dispatch`        | Reports if/switch dispatch that can be table-driven. Refactor suggested: use a registry or map (Data-Driven Dispatch).                                                                                                                                            |
 | `prefer-intl-date-formatting`        | Promotion review candidate: manual locale date formatting hides a time zone. Suggested promotion: use `Intl.DateTimeFormat` with an explicit `timeZone` (Internationalization). Non-blocking, strict preset only.                                                 |
@@ -69,6 +72,7 @@ Heuristics are non-blocking review signals: they never assert an absolute defect
 | `inappropriate-static`                 | Inappropriate Static                          | Reports instance methods that never reference instance state.                                                |
 | `long-parameter-list`                  | Long Parameter List                           | Reports functions and methods with more than four parameters.                                                |
 | `max-one-indentation`                  | Calisthenics: one level of indentation        | Reports function bodies that nest statements more than one level deep.                                       |
+| `max-two-instance-variables`           | Calisthenics: small state objects             | Review candidate for domain/application classes with more than two instance fields.                          |
 | `middle-man`                           | Middle Man                                    | Reports methods whose only behavior is forwarding a call to another object.                                  |
 | `mutable-data`                         | Mutable Data                                  | Reports `let` declarations in domain and application files.                                                  |
 | `no-abbreviations`                     | Calisthenics: don't abbreviate                | Reports abbreviated identifiers that shorten intent.                                                         |
@@ -103,12 +107,12 @@ Heuristics are non-blocking review signals: they never assert an absolute defect
 
 The plugin exposes four flat configs under `plugin.configs`, derived from the data-driven registry in `src/rules/registry.ts`:
 
-- `recommended` — the 23 `standards/quality/*` deterministic rules as errors.
-- `strict` — the rigorous policies (the 25 `standards/quality/*` deterministic rules, the 30 `standards/quality/*` review heuristics and the 4 `standards/domain/*` rules) as non-blocking warnings.
+- `recommended` — the 26 `standards/quality/*` deterministic rules as errors.
+- `strict` — the rigorous policies (the 26 `standards/quality/*` deterministic rules, the 34 `standards/quality/*` review heuristics and the 4 `standards/domain/*` rules) as non-blocking warnings.
 - `architecture` — the 2 `standards/architecture/*` rules as errors.
 - `testing` — the 2 `standards/testing/*` rules as errors.
 
-The plugin ships 63 rules in total: 55 `standards/quality/*` (25 deterministic + 30 heuristics), 4 `standards/domain/*`, 2 `standards/architecture/*` and 2 `standards/testing/*`.
+The plugin ships 68 rules in total: 60 `standards/quality/*` (26 deterministic + 34 heuristics), 4 `standards/domain/*`, 2 `standards/architecture/*` and 2 `standards/testing/*`.
 
 Each rule is also addressable directly by its `standards/<category>/<name>` id.
 
@@ -127,6 +131,10 @@ The plugin classifies every rule into one of five dispositions:
 - `suggestion` — candidate for manual review, never part of any gate.
 - `architecture-test` — boundary evidence enforced through an architecture test rather than a lint rule.
 - `manual-review` — a signal that requires human judgment; never encoded as a hard rule.
+
+The complete smell-by-smell and coupling-dimension audit is in
+[`docs/smell-audit.md`](docs/smell-audit.md); it records why each remaining
+manual candidate is not safely reducible to a local ESLint AST rule.
 
 The do-not-lint contract: an absolute metric assertion such as “a class with more than five methods violates SRP” or “every mock is a smell” is a review signal, never a deterministic lint rule. Metrics become `warning`/`suggestion` evidence or `manual-review` candidates, never `error`.
 
@@ -157,6 +165,15 @@ are internal development and CI tooling. They analyze one explicit repository ta
 separation keeps the installed lint plugin small and prevents graph analysis from
 running as an ESLint side effect.
 
+The repository validates its own code with the same plugin it provides: the root
+`eslint.config.ts` registers the source plugin and applies the recommended,
+architecture and testing presets. Every quality run therefore checks that new
+implementation code remains compliant with the published rule contract. The
+separate `strict` configuration adds the full warning-only review catalogue;
+Hoopi 3x3's local ESLint configuration contains only generic ESLint recommended
+rules, so it does not provide equivalent domain, architecture or test-boundary
+coverage.
+
 ## Usage
 
 ### npm installation
@@ -179,7 +196,7 @@ materialized local dependency:
 ```json
 {
   "devDependencies": {
-    "@evalverde/static-analysis-standards": "^0.1.0"
+    "@evalverde/static-analysis-standards": "^0.1.4"
   }
 }
 ```
@@ -256,7 +273,7 @@ The testing rules follow the superficial-scope decision approved by the accounta
 
 ## Development
 
-Pinned stack: Node.js 26.5.0, pnpm 11.15.1, TypeScript 6.0.3, ESLint 10, `typescript-eslint` 8.66, Vitest 4.
+Pinned stack: Node.js 26.5.0, pnpm 11.15.1, TypeScript 6.0.3, ESLint 10, `typescript-eslint` 8.71.1, Vitest 5.0.3. TypeScript 7.0.2 was not selected because the current `typescript-eslint` release rejects it.
 
 ```text
 pnpm run typecheck      # strict TypeScript check

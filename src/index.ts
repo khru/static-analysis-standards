@@ -1,6 +1,9 @@
+import { createRequire } from "node:module";
 import type { ESLint, Linter } from "eslint";
 
 import { buildConfigs, buildRules } from "./rules/registry.js";
+
+const packageJson = createRequire(import.meta.url)("../package.json") as { version: string };
 
 export const rules = buildRules();
 
@@ -13,7 +16,7 @@ export interface EngineeringPlugin extends ESLint.Plugin {
 const plugin: EngineeringPlugin = {
   meta: {
     name: "@evalverde/static-analysis-standards",
-    version: "0.1.0",
+    version: packageJson.version,
   },
   rules: rules as unknown as ESLint.Plugin["rules"],
   configs,

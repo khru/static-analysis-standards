@@ -40,6 +40,13 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-console": "error",
+      "no-debugger": "error",
+      "no-eval": "error",
+      "no-implied-eval": "error",
+      "no-new-func": "error",
+      "no-prototype-builtins": "error",
+      "no-warning-comments": ["error", { terms: ["TODO", "FIXME"], location: "anywhere" }],
     },
   },
 );

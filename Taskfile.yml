@@ -6,7 +6,7 @@ tasks:
   ci:local:
     desc: Execute the static-analysis standards workflow locally with act
     cmds:
-      - task --dir .. ci:act:plugin
+      - act push -W .github/workflows/quality.yml --platform ubuntu-latest=catthehacker/ubuntu:act-latest --container-architecture linux/amd64
   test:
     desc: Run the plugin unit tests
     cmds:

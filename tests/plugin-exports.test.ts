@@ -10,12 +10,12 @@ describe("plugin surface", () => {
   it("exposes the plugin metadata", () => {
     expect(plugin.meta).toEqual({
       name: "@evalverde/static-analysis-standards",
-      version: "0.1.0",
+      version: "0.1.4",
     });
   });
 
-  it("registers the sixty-three rules under the standards prefix", () => {
-    expect(Object.keys(rules)).toHaveLength(64);
+  it("registers the sixty-eight rules under the standards prefix", () => {
+    expect(Object.keys(rules)).toHaveLength(68);
   });
 
   it("registers the deterministic quality rules", () => {
@@ -33,12 +33,15 @@ describe("plugin surface", () => {
     expect(rules["quality/no-abbreviated-names"]).toBeDefined();
     expect(rules["quality/no-deprecated-api-usage"]).toBeDefined();
     expect(rules["quality/no-interface-prefix-suffix"]).toBeDefined();
+    expect(rules["quality/no-fallacious-method-name"]).toBeDefined();
     expect(rules["quality/no-local-time-construction"]).toBeDefined();
     expect(rules["quality/no-magic-numbers"]).toBeDefined();
     expect(rules["quality/no-magic-strings"]).toBeDefined();
     expect(rules["quality/no-mixed-abstraction-levels"]).toBeDefined();
     expect(rules["quality/no-mixed-effect-categories"]).toBeDefined();
+    expect(rules["quality/no-public-mutable-properties"]).toBeDefined();
     expect(rules["quality/no-stringly-typed-dispatch"]).toBeDefined();
+    expect(rules["quality/no-type-embedded-in-name"]).toBeDefined();
     expect(rules["quality/prefer-data-driven-dispatch"]).toBeDefined();
     expect(rules["quality/prefer-intl-date-formatting"]).toBeDefined();
     expect(rules["quality/prefer-utc-date-getters"]).toBeDefined();
@@ -53,6 +56,7 @@ describe("plugin surface", () => {
     expect(rules["quality/few-instance-variables"]).toBeDefined();
     expect(rules["quality/first-class-collection-candidate"]).toBeDefined();
     expect(rules["quality/max-one-indentation"]).toBeDefined();
+    expect(rules["quality/max-two-instance-variables"]).toBeDefined();
     expect(rules["quality/no-abbreviations"]).toBeDefined();
     expect(rules["quality/no-concrete-low-level-dependency"]).toBeDefined();
     expect(rules["quality/no-else"]).toBeDefined();
@@ -126,6 +130,7 @@ describe("plugin surface", () => {
     expect(configs.strict?.rules).toEqual({
       "standards/quality/max-function-statements": "warn",
       "standards/quality/max-nesting-depth": "warn",
+      "standards/quality/max-two-instance-variables": "warn",
       "standards/quality/no-abbreviated-names": "warn",
       "standards/quality/no-boolean-parameter": "warn",
       "standards/quality/no-date-construction-outside-clock": "warn",
@@ -135,15 +140,18 @@ describe("plugin surface", () => {
       "standards/quality/no-generic-error": "warn",
       "standards/quality/no-high-cognitive-boolean-expression": "warn",
       "standards/quality/no-generic-names-in-domain": "warn",
+      "standards/quality/no-fallacious-method-name": "warn",
       "standards/quality/no-interface-prefix-suffix": "warn",
       "standards/quality/no-local-time-construction": "warn",
       "standards/quality/no-magic-numbers": "warn",
       "standards/quality/no-magic-strings": "warn",
       "standards/quality/no-mixed-abstraction-levels": "warn",
       "standards/quality/no-mixed-effect-categories": "warn",
+      "standards/quality/no-public-mutable-properties": "warn",
       "standards/quality/no-nested-ternary": "warn",
       "standards/quality/no-static-service-locator": "warn",
       "standards/quality/no-stringly-typed-dispatch": "warn",
+      "standards/quality/no-type-embedded-in-name": "warn",
       "standards/quality/no-uncommunicative-names": "warn",
       "standards/quality/prefer-data-driven-dispatch": "warn",
       "standards/quality/prefer-intl-date-formatting": "warn",
